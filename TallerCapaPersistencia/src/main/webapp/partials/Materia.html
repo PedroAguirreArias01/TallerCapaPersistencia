@@ -1,0 +1,172 @@
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Materia</div>
+    <div class="panel-body">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-click="nuevo()">Nueva Materia</button>
+        </div>
+        <br>
+        <br>
+        <table class="resultados table table-striped">
+            <tr>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Creditos
+                </th>
+                <th>
+                    Carrera
+                </th>
+                <th>
+                    Profesor/a
+                </th>
+                <th>
+                    Horarios
+                </th>
+                <th>
+                    Opciones
+                </th>
+            </tr>
+            <tr ng-repeat="row in lista">
+                <td>{{row.nombre}}</td>
+                <td>{{row.creditos}}</td>
+                <td class="row">{{row.carrera.nombre}}</td>
+                <td class="row">{{row.profesor.nombres}}</td>
+                <td class="row">
+                    <ul>
+                        <li ng-repeat="rowHorario in row.horario">
+                            {{rowHorario.dia}} {{rowHorario.horaFin | date:'mediumTime'}} {{rowHorario.horaInicio | date:'mediumTime'}}
+                        </li>
+                    </ul>
+                    
+                </td>
+                <td class="row">
+                    <button type="button" class="btn btn-default" ng-click="editar(row)">
+                        <span class="glyphicon glyphicon-pencil"></span>Editar
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="eliminar(row)">
+                        <span class="glyphicon glyphicon-remove"></span>Eliminar
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Materia</div>
+    <div class="panel-body">
+
+        <div class="form-group col-md-6" ng-class="errores.nombre ? 'error' : ''">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" 
+                   class="form-control" 
+                   type="text"
+                   ng-model="datosFormulario.nombre"
+                   placeholder="Nombre"/>
+            <label for="creditos">Creditos</label>
+            <input id="creditos" 
+                   class="form-control" 
+                   type="number"
+                   ng-model="datosFormulario.creditos"
+                   placeholder="Creditos"/>
+            <label>Carrera</label>
+            <select id="carrera" class="form-control" 
+                        ng-model="datosFormulario.carrera"
+                        ng-options="option.nombre for option in listaCarrera track by option.id">
+            </select>
+            <label>Profesor/a</label>
+                <select id="carrera" class="form-control" 
+                        ng-model="datosFormulario.profesor"
+                        ng-options="option.nombres for option in listaProfes track by option.id">
+                </select>
+            <div ng-show="errores.nombre">{{errores.nombre}}</div>
+            <br>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-click="guardarMateria()">Aceptar</button>
+                <button type="button" class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+            </div>
+        </div> 
+        <div class="form-group col-md-6" ng-class="errores.nombre ? 'error' : ''">
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        Día
+                    </th>
+                    <th>
+                        Hora inicio
+                    </th>
+                    <th>
+                        Hora fin
+                    </th>
+                    <th>
+                        Eliminar
+                    </th>
+                    <th>
+                        Editar
+                    </th>
+                </tr>
+                <tr ng-repeat="row in datosFormulario.horario">
+                    <td>{{row.dia}}</td>
+                    <td>{{row.horaInicio | date:'h:mma'}}</td>
+                    <td>{{row.horaFin | date:'h:mma'}}</td>
+                    <td>
+                        <button type="button" class="btn btn-default" ng-click="eliminarHorario(row)">
+                            <span class="glyphicon glyphicon-remove"></span>Eliminar
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-default" ng-click="editarHorario(row)">
+                            <span class="glyphicon glyphicon-pencil"></span>Editar
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <button type="button" class="btn btn-default"  ng-click="nuevoHorario()">Nuevo horario</button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalHorario" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Horarios</h4>
+              </div>
+              <div class="modal-body">
+                <label for="dia">Día:</label>
+                <select id="dia" class="form-control" ng-model="datosHorario.dia" >
+                    <option value="1">Lunes</option>
+                    <option value="2">Martes</option>
+                    <option value="3">Miercoles</option>
+                    <option value="4">Jueves</option>
+                    <option value="5">Viernes</option>
+                    <option value="6">Sábado</option>
+                    <option value="7">Domingo</option>
+                </select>
+                <label for="horaInicio">Hora inicio:</label>
+                <input id="horaInicio" 
+                       class="form-control" 
+                       type="time"
+                       ng-model="datosHorario.horaInicio"
+                       placeholder="hora inicio"/>
+                <label for="horaFin">Hora fin:</label>
+                <input id="horaFin" 
+                       class="form-control" 
+                       type="time"
+                       ng-model="datosHorario.horaFin"
+                       placeholder="hora fin"/>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" ng-click="guardarHorario()">Guardar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,144 @@
+
+
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Matricula</div>
+    <div class="panel-body">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-click="nuevo()">Nueva Matricula</button>
+        </div>
+        <table class="resultados table table-striped">
+            <tr>
+                <th>
+                    Año
+                </th>
+                <th>
+                    Semestre
+                </th>
+                <th>
+                    Estudiante
+                </th>
+                <th>
+                    Materias
+                </th>
+                <th>
+                </th>
+            </tr>
+            <tr ng-repeat="row in lista">
+                <td>{{row.annio}}</td>
+                <td>{{row.semestre}}</td>
+                <td>{{row.estudiante.nombre}}</td>
+                <td class="row"><select disabled size="2" multiple class="form-control" 
+                                        ng-model="datosFormulario.materias"
+                                        ng-options="option.nombre for option in row.materias">
+                    </select></td>
+                <td class="row">
+                    <button type="button" class="btn btn-default" ng-click="editar(row);searchMat(row.estudiante.carrera)">
+                        <span class="glyphicon glyphicon-pencil"></span>Editar
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="eliminar(row)">
+                        <span class="glyphicon glyphicon-remove"></span>Eliminar
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Matricula</div>
+    <div class="panel-body">
+
+        <div class="form-group col-md-6" ng-class="errores.estudiante ? 'error' : ''">
+            <label for="anio">Año</label>
+            <input id="anio" 
+                   class="form-control" 
+                   type="number"
+                   ng-model="datosFormulario.annio"
+                   placeholder="Año"/>
+            <label for="semestre">Semestre</label>
+            <input id="semestre" 
+                   class="form-control" 
+                   type="number"
+                   ng-model="datosFormulario.semestre"
+                   placeholder="Semestre"/>
+            <label for="estudiante">Estudiante</label>
+            <select id="estudiante" class="form-control" 
+                    ng-model="datosFormulario.estudiante"
+                    ng-change="searchMat(datosFormulario.estudiante.carrera)"
+                    ng-options="option.nombre + ' ' + option.apellido for option in listaEstudia track by option.id">
+            </select>
+            
+            <div class="form-group col-md-6" ng-class="errores.nombre ? 'error' : ''">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Creditos
+                        </th>
+                        <th>
+                            Eliminar
+                        </th>
+                        <th>
+                            Editar
+                        </th>
+                    </tr>
+                    <tr ng-repeat="row in datosFormulario.materias">
+                        <td>{{row.nombre}}</td>
+                        <td>{{row.creditos}}</td>
+                        <td>
+                            <button type="button" class="btn btn-default" ng-click="eliminarHorario(row)">
+                                <span class="glyphicon glyphicon-remove"></span>Eliminar
+                            </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-default" ng-click="editarHorario(row)">
+                                <span class="glyphicon glyphicon-pencil"></span>Editar
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+                <input type="submit" class="btn btn-default"  value="Nueva Materia" ng-click="nuevaMateria ()"/>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="form-group col-md-6" ng-class="errores.facultad ? 'error' : ''">
+
+                <div ng-show="errores.facultad">{{errores.facultad}}</div>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-click="guardar()">Aceptar</button>
+            <button type="button" class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+        </div>    
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalMateria" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Materias</h4>
+            </div>
+            <div class="modal-body">
+                <label for="materia">Materia:</label>
+                <select id="materia" class="form-control" ng-model="datosMateria.nombre">
+                    <option ng-repeat="row in matCarr" >{{row.nombre}}</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="guardarMaterias()">Guardar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,116 @@
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Estudiantes</div>
+    <div class="panel-body">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary" ng-click="nuevo()">Nuevo Estudiante</button>
+        </div>
+        <table class="resultados table table-striped">
+            <tr>
+                <th>
+                    Nombres
+                </th>
+                <th>
+                    Apellidos
+                </th>
+                <th>
+                    Codigo
+                </th>
+                <th>
+                    Documento
+                </th>
+                <th>
+                    Fecha de nacimiento
+                </th>
+                <th>
+                    Municipio
+                </th>
+                <th>
+                    Carrera
+                </th>
+                <th>
+                </th>
+            </tr>
+            <tr ng-repeat="row in lista">
+                <td>{{row.nombre}}</td>
+                <td>{{row.apellidos}}</td>
+                <td>{{row.codigo}}</td>
+                <td>{{row.documento}}</td>
+                <td>{{row.fechaNacimiento| date:'dd/MM/yyyy'}}</td>
+                <td>{{row.municipio.nombre}}</td>
+                <td>{{row.carrera.nombre}}</td>
+                <td class="row">
+                    <button type="button" class="btn btn-info" ng-click="editar(row)">
+                        <span class="glyphicon glyphicon-pencil"></span>Editar
+                    </button>
+                    <button type="button" class="btn btn-danger" ng-click="eliminar(row)">
+                        <span class="glyphicon glyphicon-remove"></span>Eliminar
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Profesor</div>
+    <div class="panel-body">
+        <div class="form-group col-md-6">
+            <label for="nombre">Nombres</label>
+            <input id="nombre" 
+                   class="form-control" 
+                   type="text"
+                   ng-model="datosFormulario.nombre"
+                   placeholder="Nombres"/>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="apellidos">Apellidos</label>
+            <input id="apellidos" 
+                   class="form-control" 
+                   type="text"
+                   ng-model="datosFormulario.apellidos"
+                   placeholder="Apellidos"/>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="codigo">Codigo</label>
+            <input id="codigo" 
+                   class="form-control" 
+                   type="text"
+                   ng-model="datosFormulario.codigo"
+                   placeholder="Codigo"/>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="documento">Documento</label>
+            <input id="documento" 
+                   class="form-control" 
+                   type="text"
+                   ng-model="datosFormulario.documento"
+                   placeholder="Documento"/>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="fechaNacimiento">Fecha de Nacimiento</label>
+            <md-datepicker ng-model="datosFormulario.fechaNacimiento" md-placeholder="Fecha de Nacimiento"></md-datepicker>
+        </div>
+        <div class="form-group col-md-6">
+
+            <label for="Municipio">Municipio</label>
+            <select id="municipio" class="form-control" 
+                    ng-model="datosFormulario.municipio"
+                    ng-options="option.nombre for option in listaMunicipio track by option.id">
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="carrera">Carrera</label>
+            <select id="municipio" class="form-control" 
+                    ng-model="datosFormulario.carrera"
+                    ng-options="option.nombre for option in listaCarrera track by option.id">
+            </select>
+        </div>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary" ng-click="guardar()">Aceptar</button>
+        <button type="button" class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+    </div>    
+</div>
+<!--</div>-->
+
