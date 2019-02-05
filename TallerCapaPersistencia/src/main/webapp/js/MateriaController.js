@@ -49,11 +49,10 @@ module.controller('MateriaCtrl', ['$scope', '$filter', '$http', function ($scope
         };
 
         $scope.getMaterias = function () {
-            //$scope.lista = null;
+            $scope.lista = null;
             $http.get("./webresources/ServicioMateria", {})
                     .then(function (response) {
                         $scope.lista = response.data;
-                        console.log('lista'+$scope.lista[0].horario[0]);
                         for (var i = 0; i < $scope.lista.length; i++) {
                             for (var j = 0; j < $scope.lista[i].horario.length; j++) {
                                 console.log('este es el horario obtenido: '+$scope.lista[i].horario[j]);
